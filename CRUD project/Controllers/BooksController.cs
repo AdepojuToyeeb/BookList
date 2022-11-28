@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CRUD_project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,6 +40,22 @@ namespace CRUD_project.Controllers
                 _db.Add(book);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(book);
+        }
+
+        //Details : books/details/5
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var book = await _db.Books.SingleOrDefaultAsync(m => m.Id == id);
+            if (book == null)
+            {
+                return NotFound();
             }
             return View(book);
         }
