@@ -23,6 +23,27 @@ namespace CRUD_project.Controllers
             return View(_db.Books.ToList());
         }
 
+        // GET: books/create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //POST: books/create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Add(book);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(book);
+        }
+        
+
         protected override void Dispose(bool disposing)
         {
             if(disposing)
